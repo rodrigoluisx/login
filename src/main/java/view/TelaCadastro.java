@@ -1,5 +1,27 @@
 package view;
 
+private void carregarTabela() {
+
+    DefaultTableModel tabela =
+        (DefaultTableModel) jTableProdutos.getModel();
+
+    tabela.setRowCount(0);
+
+    ProdutoDAO dao = new ProdutoDAO();
+
+    List<Produto> produtos = dao.listar();
+
+    for (Produto produto : produtos) {
+
+        tabela.addRow(new Object[]{
+            produto.getNome(),
+            String.format("%.2f", produto.getPreco()),
+            produto.getEstoque()
+        });
+    }
+}
+
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,39 +66,48 @@ public class TelaCadastro extends JFrame {
         add(new JLabel(""));
         add(jButtonCadastrar);
 
-        // Evento do botão Cadastrar
         jButtonCadastrar.addActionListener(e -> jButtonCadastrarActionPerformed());
     }
 
     private void jButtonCadastrarActionPerformed() {
 
-        String nome = jTextFieldNome.getText();
+        try {
 
-        double preco = Double.parseDouble(
-            jTextFieldPreco.getText()
-        );
+            String nome = jTextFieldNome.getText();
 
-        int estoque = Integer.parseInt(
-            jTextFieldEstoque.getText()
-        );
+            double preco = Double.parseDouble(
+                jTextFieldPreco.getText()
+            );
 
-        Produto produto = new Produto();
+            int estoque = Integer.parseInt(
+                jTextFieldEstoque.getText()
+            );
 
-        produto.setNome(nome);
-        produto.setPreco(preco);
-        produto.setEstoque(estoque);
+            Produto produto = new Produto();
 
-        ProdutoDAO dao = new ProdutoDAO();
+            produto.setNome(nome);
+            produto.setPreco(preco);
+            produto.setEstoque(estoque);
 
-        dao.cadastrar(produto);
+            ProdutoDAO dao = new ProdutoDAO();
 
-        JOptionPane.showMessageDialog(
-            this,
-            "Produto cadastrado com sucesso!"
-        );
+            dao.cadastrar(produto);
 
-        jTextFieldNome.setText("");
-        jTextFieldPreco.setText("");
-        jTextFieldEstoque.setText("");
+            JOptionPane.showMessageDialog(
+                this,
+                "Produto cadastrado com sucesso!"
+            );
+
+            jTextFieldNome.setText("");
+            jTextFieldPreco.setText("");
+            jTextFieldEstoque.setText("");
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Preço e estoque devem ser números!"
+            );
+        }
     }
 }

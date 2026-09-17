@@ -1,6 +1,7 @@
 package main;
 
 import dao.Conexao;
+import view.TelaCadastro;
 import view.TelaLogin;
 
 import javax.swing.SwingUtilities;
@@ -11,7 +12,7 @@ public class Main {
         Conexao.inicializarBanco();
 
         SwingUtilities.invokeLater(() -> {
-            TelaLogin tela = new TelaLogin();
+            TelaCadastro tela = new TelaCadastro();
             tela.setVisible(true);
         });
     }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class ProdutoDAO {
     
     public void cadastrar(Produto produto){
-        String sql =  "INSERT INTO produto (nome, preco, estoque) VALUES (?, ?, ?,)";
+        String sql =  "INSERT INTO produto (nome, preco, estoque) VALUES (?, ?, ?)";
         try (Connection conexao = Conexao.conectar();
         PreparedStatement comando = conexao.prepareStatement(sql)){
             comando.setString(1, produto.getNome());
